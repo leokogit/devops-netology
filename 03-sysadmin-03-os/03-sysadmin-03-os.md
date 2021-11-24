@@ -1,3 +1,6 @@
+## Домашние задания по курсу “DEVSYS-PDC-2 DevOps-инженер”. Кожаев Л.С.
+### ДЗ 03-sysadmin-01-terminal. 3.3. Операционные системы, лекция 1
+
 #### 1. Какой системный вызов делает команда cd? В прошлом ДЗ мы выяснили, что cd не является самостоятельной программой, это shell builtin, поэтому запустить strace непосредственно на cd не получится. Тем не менее, вы можете запустить strace на /bin/bash -c 'cd /tmp'. В этом случае вы увидите полный список системных вызовов, которые делает сам bash при старте. Вам нужно найти тот единственный, который относится именно к cd.
 
 > chdir("/tmp")
@@ -13,25 +16,25 @@
 $HOME/.magic.mgc
 $HOME/.magic
 
-> Предварительно создал текстовый файл для проверки
-`echo "It's text file" > /tmp/2.txt `
-> Запустил strace
-`strace file /tmp/2.txt`
+> Предварительно создал текстовый файл для проверки 
+`echo "It's text file" > /tmp/2.txt `   
+> Запустил strace   
+`strace file /tmp/2.txt`    
 
-`strace` Показал, что была произведена проверка по всем файлам указанным в списке выше, т.к. магический номер для искомого файла не был найден, было определено что тип файла text/plain
+`strace` Показал, что была произведена проверка по всем файлам указанным в списке выше, т.к. магический номер для искомого файла не был найден, было определено что тип файла text/plain    
 
-(об этом говорит строчка из man file "...If a file does not match any of the entries in the magic file, it is examined to see if it seems to be a text file.)
+(об этом говорит строчка из man file "...If a file does not match any of the entries in the magic file, it is examined to see if it seems to be a text file.)   
 
 ---
 
 #### 3. Предположим, приложение пишет лог в текстовый файл. Этот файл оказался удален (deleted в lsof), однако возможности сигналом сказать приложению переоткрыть файлы или просто перезапустить приложение – нет. Так как приложение продолжает писать в удаленный файл, место на диске постепенно заканчивается. Основываясь на знаниях о перенаправлении потоков предложите способ обнуления открытого удаленного файла (чтобы освободить место на файловой системе).
 
-> `cat /dev/null > /proc/14512/fd/3` где 14512 PID процесса который пишет в уадлённый файл с дескриптором 3
-> Если файл слишком быстро растёт и надо остановить это, можно опопробовать запустить в фоне другой процесс, где циклично писать из dev/null в дескриптор удалённого файла :
-`while true; do cat /dev/null > /proc/14512/fd/3; done &`
+> `cat /dev/null > /proc/14512/fd/3` где 14512 PID процесса который пишет в уадлённый файл с дескриптором 3    
+>  
+> Если файл слишком быстро растёт и надо остановить это, можно опопробовать запустить в фоне другой процесс, где циклично писать из dev/null в дескриптор удалённого файла :    
+`while true; do cat /dev/null > /proc/14512/fd/3; done &`   
 
-либо : `truncate -s 0 /proc/14512/fd/3`
-
+либо : `truncate -s 0 /proc/14512/fd/3` 
 
 ---
 
@@ -61,9 +64,9 @@ ___
 
 #### 6. Какой системный вызов использует uname -a? Приведите цитату из man по этому системному вызову, где описывается альтернативное местоположение в /proc, где можно узнать версию ядра и релиз ОС.
 
-> uname ()
-> `man 2 uname` :
-> "Part of the utsname information is also accessible via /proc/sys/kernel/{ostype, hostname, osrelease, version, domainname}."
+> uname ()      
+> `man 2 uname` :   
+> "Part of the utsname information is also accessible via /proc/sys/kernel/{ostype, hostname, osrelease, version, domainname}." 
 
 ---
 
@@ -78,26 +81,27 @@ ___
     ```
     Есть ли смысл использовать в bash `&&`, если применить `set -e`?
 
-> Через ";" Команды будут выполняться последовательно и независимо от успеха выполнения предыдущих команд (указанные до оператора ";")
-> Через "&&" Следущая команда, указанная после этого оператора, будет выполнена только если предыдущая команда отработала успешно
-> Использовать или нет, наверное зависит от заложенной логики и необходимого поведения.
+> Через ";" Команды будут выполняться последовательно и независимо от успеха выполнения предыдущих команд (указанные до оператора ";")      
+> Через "&&" Следущая команда, указанная после этого оператора, будет выполнена только если предыдущая команда отработала успешно       
+> Использовать или нет, наверное зависит от заложенной логики и необходимого поведения.     
 
-> set -e останавливает выполнение сценария, если в команде или конвейере есть ошибка. Но(!) будет игнорироваться при определённых способах использовании оператора "&&" (в частности).
+> set -e останавливает выполнение сценария, если в команде или конвейере есть ошибка. Но(!) будет игнорироваться при определённых способах использовании оператора "&&" (в частности).      
 
-из man bash касательно set -e :
+из man bash касательно set -e :     
 
-"The shell does not exit if the command that fails is part of the command list immediately following a while or until keyword, part of the test following the if or elif reserved words, part of any command executed in a && or || list except the command following the final && or ||, any command in a pipeline but the last, or if the command's return value is being inverted with !. If a compound command other than a subshell returns a non-zero status because a command failed while -e was being ignored, the shell does not exit. A trap on ERR, if set, is executed before the shell exits. This option applies to the shell environment and each sub-shell environment separately (see COMMAND EXECUTION ENVIRONMENT above), and may cause subshells to exit before executing all the commands in the subshell."
+"The shell does not exit if the command that fails is part of the command list immediately following a while or until keyword, part of the test following the if or elif reserved words, part of any command executed in a && or || list except the command following the final && or ||, any command in a pipeline but the last, or if the command's return value is being inverted with !. If a compound command other than a subshell returns a non-zero status because a command failed while -e was being ignored, the shell does not exit. A trap on ERR, if set, is executed before the shell exits. This option applies to the shell environment and each sub-shell environment separately (see COMMAND EXECUTION ENVIRONMENT above), and may cause subshells to exit before executing all the commands in the subshell."   
 
 ---
 
-#### 8. Из каких опций состоит режим bash set -euxo pipefail и почему его хорошо было бы использовать в сценариях?
+#### 8. Из каких опций состоит режим bash set -euxo pipefail и почему его хорошо было бы использовать в сценариях?  
 
-+ set -e            Скрипт немедленно завершит работу, если любая команда выйдет с ошибкой. По-умолчанию, игнорируются любые неудачи и сценарий продолжет выполнятся.
-+ set -u            Проверка инициализации переменных в скрипте. Если переменной не будет, скрипт немедленно завершиться.
-+ set -x            Печать в стандартный вывод всех команд перед их исполнением.
-+ set -o pipefail   Если нужно убедиться, что все команды в пайпах завершились успешно
++ set -e     Скрипт немедленно завершит работу, если любая команда выйдет с ошибкой. По-умолчанию, игнорируются любые неудачи и сценарий продолжет выполнятся.
++ set -u     Проверка инициализации переменных в скрипте. Если переменной не будет, скрипт немедленно завершиться.
++ set -x     Печать в стандартный вывод всех команд перед их исполнением.
++ set -o pipefail Если нужно убедиться, что все команды в пайпах завершились успешно 
 
 Для отказоустойчивости и отладки сценария
+
 ---
 
 #### 9. Используя -o stat для ps, определите, какой наиболее часто встречающийся статус у процессов в системе. В man ps ознакомьтесь (/PROCESS STATE CODES) что значат дополнительные к основной заглавной буквы статуса процессов. Его можно не учитывать при расчете (считать S, Ss или Ssl равнозначными).
