@@ -31,7 +31,8 @@ vagrant@vagrant:/etc/systemd/system$ systemctl status node_exporter.service
 
 ```
 
-Создан конфиг с переменной $NE_OPTS и опциями в /etc/node_exporter/node_exporter.conf
+Создан конфиг с переменной $NE_OPTS и опциями в /etc/node_exporter/node_exporter.conf   
+
 В юните, через EnvironmentFile добавлен config :
 
 ```
