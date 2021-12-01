@@ -361,13 +361,13 @@ vagrant@vagrant:/tmp/new$ dmesg |grep raid1
 
 ---
 
-#### 19. Протестируйте целостность файла, несмотря на "сбойный" диск он должен продолжать быть доступен:
+#### 19. Протестируйте целостность файла, несмотря на "сбойный" диск он должен продолжать быть доступен:  
 
-root@vagrant:~# gzip -t /tmp/new/test.gz
-root@vagrant:~# echo $?
-0
+root@vagrant:~# gzip -t /tmp/new/test.gz  
+root@vagrant:~# echo $? 
+0 
 
-Ответ:
+Ответ:  
 
 ```
 vagrant@vagrant:/tmp/new$ gzip -t test.gz
