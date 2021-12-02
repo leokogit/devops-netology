@@ -44,6 +44,7 @@ Referrer Policy: strict-origin-when-cross-origin
 
 Cкриншот:
 
+![stack](/03-sysadmin-06-net/stackload.jpg "stackload")
 
 ---
 
