@@ -34,13 +34,18 @@ location: https://stackoverflow.com/questions
 
 Ответ:
 
-http://stackoverflow.com открыт в браузере, на вкладке Headers:
+первый ответ HTTP сервера, http://stackoverflow.com открыт в браузере, на вкладке Headers:
 
 Request URL: http://stackoverflow.com/
 Request Method: GET
 Status Code: 301 Moved Permanently
 Remote Address: 151.101.129.69:80
-Referrer Policy: strict-origin-when-cross-origin
+Referrer Policy: strict-origin-when-cross-origin  
+
+
+
+Время загрузки 904 ms (1.01 s полная) 
+Обрабатывался дольше всего этот запрос:  stackoverflow.com
 
 Cкриншот:
 
