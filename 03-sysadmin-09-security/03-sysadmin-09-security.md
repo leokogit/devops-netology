@@ -145,17 +145,44 @@ Last login: Mon Dec 13 22:01:48 2021 from 10.14.1.2
 vagrant@srv1:~$ 
 
 ```
-
 ---
 
 #### 6. Переименуйте файлы ключей из задания 5. Настройте файл конфигурации SSH клиента, так чтобы вход на удаленный сервер осуществлялся по имени сервера.
 
 Ответ:
 
-```
+Переименовываем файлы ключей:       
 
 ```
+vagrant@vag:~/.ssh$ mv id_rsa vag_key
+vagrant@vag:~/.ssh$ mv id_rsa.pub vag.pub
 
+```
+Меняем права на vag.pub ( если были установлены 644): 
+
+```
+vagrant@vag:~/.ssh$ chmod 600 vag.pub
+
+```
+Настраиваем файл конфигурации SSH клиента:  
+
+```
+vagrant@vag:~/.ssh$ cat /etc/ssh/ssh_config | tail -n 4
+host srv1
+hostname 10.14.1.3
+IdentityFile ~/.ssh/vag_key
+user vagrant
+
+```
+Подключаемся к серверу srv1 (10.14.1.3) по имени:    
+
+```
+vagrant@vag:~/.ssh$ ssh srv1
+Welcome to srv1 (Ubuntu 20.04.2 LTS GNU/Linux )
+Last login: Mon Dec 13 22:47:02 2021 from 10.14.1.2
+vagrant@srv1:~$ 
+
+```
 ---
 
 #### 7. Соберите дамп трафика утилитой tcpdump в формате pcap, 100 пакетов. Откройте файл pcap в Wireshark.
