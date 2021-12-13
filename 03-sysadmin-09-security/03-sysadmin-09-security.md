@@ -164,7 +164,7 @@ vagrant@vag:~/.ssh$ mv id_rsa.pub vag.pub
 vagrant@vag:~/.ssh$ chmod 600 vag.pub
 
 ```
-Настраиваем файл конфигурации SSH клиента:  
+Проверяем настроенный файл конфигурации SSH клиента:  
 
 ```
 vagrant@vag:~/.ssh$ cat /etc/ssh/ssh_config | tail -n 4
