@@ -190,7 +190,9 @@ vagrant@srv1:~$
 Ответ:
 
 ```
+tcpdump -c 100 -w 0001.pcap -i eth1
 
 ```
+![dump](/03-sysadmin-09-security/dump.jpg "dump")
 
 ---
