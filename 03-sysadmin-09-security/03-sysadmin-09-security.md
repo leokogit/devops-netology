@@ -92,12 +92,57 @@ ___
 
 Ответ:
 
+Проверяем установку ssh-server и создаём ключ:  
+
 ```
 vagrant@vag:~$ sudo apt list -i 2>/dev/null | grep ssh-server
 openssh-server/focal-updates,now 1:8.2p1-4ubuntu0.3 amd64 [installed]
 
+vagrant@vag:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/vagrant/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/vagrant/.ssh/id_rsa
+Your public key has been saved in /home/vagrant/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:NPeCmPQUuw1vy1L2ACI4zx37R3DOBdASF70/sRMMlqk vagrant@vag
+The key's randomart image is:
++---[RSA 3072]----+
+|        +++o o   |
+|   .    .+..*    |
+|  o . + O.oo.+   |
+|   + + X #Eo. +  |
+|    o = S % .. + |
+|       . * =  =  |
+|        o + .  o |
+|         o       |
+|                 |
++----[SHA256]-----+
 
+```
+Копируем ключ на сервер srv1 (10.14.1.3):    
 
+```
+vagrant@vag:~$ ssh-copy-id vagrant@10.14.1.3
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/vagrant/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+vagrant@10.14.1.3's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'vagrant@10.14.1.3'"
+and check to make sure that only the key(s) you wanted were added.
+
+```
+Заходим на сервер srv1 (10.14.1.3): 
+
+```
+vagrant@vag:~$ ssh vagrant@10.14.1.3
+Welcome to srv1 (Ubuntu 20.04.2 LTS GNU/Linux )
+Last login: Mon Dec 13 22:01:48 2021 from 10.14.1.2
+vagrant@srv1:~$ 
 
 ```
 
