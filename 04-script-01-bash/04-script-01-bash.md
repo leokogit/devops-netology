@@ -41,9 +41,9 @@ do
 	curl https://localhost:4757
 	if (($? != 0))
 	then
-		date >> curl.log
+		echo "Service is down. $(date)" >> curl.log
 	else	# Иначе (код возврата стал = "0") выполняем команды следущие после else
-	echo "Service is ok. Exit..." # Выводим сообщение, что сервис поднялся, всё ок
+	echo "Service is ok. Exit ..." # Выводим сообщение, что сервис поднялся, всё ок
 	exit	# Завершаем работу скрипта
 	fi
 done
