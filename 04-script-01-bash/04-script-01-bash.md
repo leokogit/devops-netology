@@ -54,7 +54,25 @@ done
 
 ### Ваш скрипт:
 ```bash
-???
+#!/usr/bin/env bash
+ip1=192.168.0.1:80
+ip2=173.194.222.113:80
+ip3=87.250.250.242:80
+declare -i i
+i=1
+while (($i != 6)) 
+do
+        echo -e "$(date)\nCheck № $i for ip:\n" >> iptest.log
+        echo "Check № $i"
+        for ip in {$ip1,$ip2,$ip3}
+        do
+        echo -e "-----------------\n$ip\n-----------------\n">>iptest.log
+        curl -I -sS $ip &>> iptest.log && echo "$ip is done"|| echo $ip is fail 
+        done
+        echo -e "More info in iptest.log\n"
+sleep 5
+i+=1
+done
 ```
 
 ## Обязательная задача 3
