@@ -67,7 +67,7 @@ do
         for ip in {$ip1,$ip2,$ip3}
         do
         echo -e "-----------------\n$ip\n-----------------\n">>iptest.log
-        curl -I -sS $ip &>> iptest.log && echo "$ip is done"|| echo $ip is fail 
+        curl -I -sS $ip &>> iptest.log && echo "$ip is done"|| echo "$ip is fail" 
         done
         echo -e "More info in iptest.log\n"
 sleep 5
