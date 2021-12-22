@@ -66,7 +66,7 @@ do
 	echo "Check № $i"
         for ip in {$ip1,$ip2,$ip3}
         do
-        echo -e "-----------------\n$ip\n-----------------\n">>curltest.log
+        echo -e "-----------------\n$ip\n-----------------\n">> curltest.log
         curl -I -sS $ip &>> curltest.log && echo "$ip is done"|| echo "$ip is fail" 
         done
 	echo -e "More info in curltest.log\n"
@@ -88,7 +88,7 @@ while ((1==1))
 do
         for ip in {$ip1,$ip2,$ip3}
         do
-        curl -I -sS $ip 2>error
+        curl -I -sS $ip 2> error
        	if (($? != 0))
         then
         echo -e "$(date)\tCheck $ip is fail.\n" >> error
