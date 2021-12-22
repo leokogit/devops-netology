@@ -62,14 +62,14 @@ declare -i i
 i=1
 while (($i != 6)) 
 do
-        echo -e "$(date)\nCheck № $i for ip:\n" >> iptest.log
-        echo "Check № $i"
+	echo -e "$(date)\nCheck № $i for ip:\n" >> curltest.log
+	echo "Check № $i"
         for ip in {$ip1,$ip2,$ip3}
         do
-        echo -e "-----------------\n$ip\n-----------------\n">>iptest.log
-        curl -I -sS $ip &>> iptest.log && echo "$ip is done"|| echo "$ip is fail" 
+        echo -e "-----------------\n$ip\n-----------------\n">>curltest.log
+        curl -I -sS $ip &>> curltest.log && echo "$ip is done"|| echo "$ip is fail" 
         done
-        echo -e "More info in iptest.log\n"
+	echo -e "More info in curltest.log\n"
 sleep 5
 i+=1
 done
@@ -80,7 +80,24 @@ done
 
 ### Ваш скрипт:
 ```bash
-???
+#!/usr/bin/env bash
+ip1=192.168.0.1:80
+ip2=173.194.222.113:80
+ip3=87.250.250.242:80
+while ((1==1)) 
+do
+        for ip in {$ip1,$ip2,$ip3}
+        do
+        curl -I -sS $ip 2>error
+       	if (($? != 0))
+        then
+        echo -e "$(date)\tCheck $ip is fail.\n" >> error
+        echo "ip: $ip is fail. More info in error. Exit ..."
+        exit
+        fi
+        done
+sleep 5
+done
 ```
 
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
