@@ -38,7 +38,21 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+import os
+
+git_repo = "~/netology/sysadm-homeworks"
+home = os.path.expanduser(git_repo)
+git_cmd = ["cd " + git_repo, "git status --porcelain"]
+git_status = os.popen(' && '.join(git_cmd)).read().strip().split('\n')
+print('Checking files with status "modified" ...', '\n', 'Result:')
+for result in git_status:
+    if result.find('M ') != -1:
+        prepare_result = result.replace(' M ', '')
+        print(f'{home}/{prepare_result}')
+    else:
+        print('Files with status "modified" is not found', '\n', 'Exit ...')
+        break
 ```
 
 ### Вывод скрипта при запуске при тестировании:
@@ -56,7 +70,24 @@ for result in result_os.split('\n'):
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+$ ../python/modified.py
+Checking files with status "modified" ... 
+ Result:
+/home/leo/netology/sysadm-homeworks/M mod
+/home/leo/netology/sysadm-homeworks/testfile
+/home/leo/netology/sysadm-homeworks/testfile2
+/home/leo/netology/sysadm-homeworks/testfile3
+
+$ git commit -a -m "added all modified files"  
+[main c25ff4f] added all modified files
+ 4 files changed, 4 insertions(+), 8 deletions(-)
+ 
+$ ../python/modified.py
+Checking files with status "modified" ... 
+ Result:
+Files with status "modified" is not found 
+ Exit ...
+
 ```
 
 ## Обязательная задача 4
