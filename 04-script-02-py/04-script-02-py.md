@@ -44,8 +44,8 @@ import os
 git_repo = "~/netology/sysadm-homeworks"
 home = os.path.expanduser(git_repo)
 git_cmd = ["cd " + git_repo, "git status --porcelain"]
-git_status = os.popen(' && '.join(git_cmd)).read().strip().split('\n')
-print('Checking files with status "modified" ...', '\n', 'Result:')
+git_status = os.popen(' && '.join(git_cmd)).read().rstrip().split('\n')
+print('Checking files with status "modified(M)" ...', '\n', 'Result:')
 for result in git_status:
     if result.find('M ') != -1:
         prepare_result = result.replace(' M ', '')
@@ -58,9 +58,9 @@ for result in git_status:
 ### Вывод скрипта при запуске при тестировании:
 ```
 $ ../python/modified.py
-Checking files with status "modified" ... 
+Checking files with status "modified(M)" ... 
  Result:
-/home/leo/netology/sysadm-homeworks/M mod
+/home/leo/netology/sysadm-homeworks/mod
 /home/leo/netology/sysadm-homeworks/testfile
 /home/leo/netology/sysadm-homeworks/testfile2
 /home/leo/netology/sysadm-homeworks/testfile3
@@ -70,7 +70,7 @@ $ git commit -a -m "added all modified files"
  4 files changed, 4 insertions(+), 8 deletions(-)
  
 $ ../python/modified.py
-Checking files with status "modified" ... 
+Checking files with status "modified(M)" ... 
  Result:
 Files with status "modified" is not found 
  Exit ...
