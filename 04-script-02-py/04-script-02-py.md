@@ -42,17 +42,19 @@ for result in result_os.split('\n'):
 import os
 
 git_repo = "~/netology/sysadm-homeworks"
+git_status = "git status --short"
 home = os.path.expanduser(git_repo)
-git_cmd = ["cd " + git_repo, "git status --porcelain"]
-git_status = os.popen(' && '.join(git_cmd)).read().rstrip().split('\n')
+git_cmd = ["cd " + git_repo, git_status]
+git_result = os.popen(' && '.join(git_cmd)).read().rstrip().split('\n')
 print('Checking files with status "modified(M)" ...', '\n', 'Result:')
-for result in git_status:
+for result in git_result:
     if result.find('M ') != -1:
         prepare_result = result.replace(' M ', '')
-        print(f'{home}/{prepare_result}')
+        print(f'\033[31m{home}/{prepare_result}')
     else:
         print('Files with status "modified" is not found', '\n', 'Exit ...')
         break
+        
 ```
 
 ### Вывод скрипта при запуске при тестировании:
@@ -82,11 +84,77 @@ Files with status "modified" is not found
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+import os
+import sys
+
+git_repo = os.getcwd()
+git_status = 'git status --short 2>&1'
+git_check = os.popen(git_status).read()
+if git_check.find('fatal') != -1 and len(sys.argv) == 1:
+    print('path: ' + git_repo + '  is not git repo \nExit ...')
+    sys.exit(1)
+if len(sys.argv) == 1:
+    print('\nWorking with current dir : "."')
+else:
+    if len(sys.argv) <= 2:
+        git_repo = sys.argv[1]
+    if not os.path.exists(git_repo):
+        print('Dir: ' + git_repo + '  Does not exist \nExit ...')
+        sys.exit(1)
+    if len(sys.argv) >= 3:
+        print("Error. Too many parameters. ")
+        sys.exit(1)
+git_cmd = ["cd " + git_repo, git_status]
+git_result = os.popen(' && '.join(git_cmd)).read().rstrip().split('\n')
+print(f'\nChecking files with status "modified(M)" in {git_repo}', '\n', 'Result:')
+for result in git_result:
+    if result.find(' M ') != -1:
+        prepare_result = result.replace(' M ', '')
+        print(f'\033[31m{git_repo}/{prepare_result}')
+    else:
+        print('Files with status "modified" is not found', '\n', 'Exit ...')
+        break
+
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
+#Без параметра. Проверка папки не являющейся гит репозиторием 
+$ cd /tmp/
+$ python3 ~/netology/python/modified2/modified2.py
+path: /tmp  is not git repo 
+Exit ...
+
+#Без параметра. Запуск в гит репозитории 
+$ cd ~/netology/sysadm-homeworks/
+$ python3 ~/netology/python/modified2/modified2.py
+
+Working with current dir : "."
+
+Checking files with status "modified(M)" in /home/leo/netology/sysadm-homeworks 
+ Result:
+/home/leo/netology/sysadm-homeworks/1/11
+/home/leo/netology/sysadm-homeworks/M
+/home/leo/netology/sysadm-homeworks/mod
+/home/leo/netology/sysadm-homeworks/testfile2
+
+#C параметром. Запуск из любой папки . Передача "ошибочного" пути
+$ cd /tmp/
+$ python3 ~/netology/python/modified2/modified2.py ~/netology/sysadm-home12
+Dir: /home/leo/netology/sysadm-home12  Does not exist 
+Exit ...
+
+#C параметром. Запуск из любой папки . Передача пути до гит репозитория
+$ cd /tmp/
+$ python3 ~/netology/python/modified2/modified2.py ~/netology/sysadm-homeworks
+
+Checking files with status "modified(M)" in /home/leo/netology/sysadm-homeworks 
+ Result:
+/home/leo/netology/sysadm-homeworks/1/11
+/home/leo/netology/sysadm-homeworks/M
+/home/leo/netology/sysadm-homeworks/mod
+/home/leo/netology/sysadm-homeworks/testfile2
 
 ```
 
