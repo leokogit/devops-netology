@@ -163,12 +163,79 @@ Checking files with status "modified(M)" in /home/leo/netology/sysadm-homeworks
 
 ### Ваш скрипт:
 ```python
-???
-```
+#Вариант с проверкой/обновлением лога с url-ip и словарем для текущей проверки.
+#!/usr/bin/env python3
+import socket
+import os
 
+url_ip = {}
+if not os.path.isfile('./url_ip.log'):
+    with open('url_ip.log', 'w') as log:
+        hosts = {'drive.google.com': '0.0.0.0', 'mail.google.com': '0.0.0.0', 'google.com': '0.0.0.0'}
+        for key, val in hosts.items():
+            log.write('{}:{}\n'.format(key, val))
+with open('url_ip.log', 'r') as inp:
+    for i in inp.readlines():
+        key, val = i.strip().split(':')
+        url_ip[key] = val
+for url in url_ip:
+    resolve = socket.gethostbyname(url)
+    if url_ip[url] != resolve and url_ip[url] != "0.0.0.0":
+        print(f'\nIP for {url} is changed !')
+        print(f'[ERROR] <{url}> IP mismatch: <{url_ip[url]}> <{resolve}>')
+        url_ip[url] = resolve
+    else:
+        print(f'<{url}> - <{resolve}>')
+        with open('url_ip.log', 'w') as log:
+            for key, val in url_ip.items():
+                resolve = socket.gethostbyname(key)
+                log.write('{}:{}\n'.format(key, resolve))
+                
+#Вариант с зацикливанием. перезапись IP в словаре и сверка старых значений с новым резолвом
+# import socket
+# import time
+#
+# url_ip = {'drive.google.com': '', 'mail.google.com': '', 'google.com': ''}
+# while True:
+#     for url in url_ip:
+#         resolve = socket.gethostbyname(url)
+#         if not url_ip[url]:
+#             print(f'<{url}> - <{resolve}>')
+#             url_ip[url] = resolve
+#         elif resolve != url_ip[url] and url_ip[url]:
+#             print(f'\nIP for {url} is changed !')
+#             print(f'[ERROR] <{url}> IP mismatch: <{url_ip[url]}> <{resolve}>')
+#             url_ip[url] = resolve
+#     time.sleep(5)
+```
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+$ cat url_ip.log 
+drive.google.com:64.233.165.194
+mail.google.com:142.251.1.17
+google.com:64.233.161.113
+$ python3 ~/netology/python/dns_ip/dns_ip.py
+<drive.google.com> - <64.233.165.194>
+
+IP for mail.google.com is changed !
+[ERROR] <mail.google.com> IP mismatch: <142.251.1.17> <142.251.1.19>
+
+IP for google.com is changed !
+[ERROR] <google.com> IP mismatch: <64.233.161.113> <142.250.150.102>
+
+
+#Вывод для варианта с зацикливанием и перезаписью значений словаря со сверкой старого IP, без использования лога
+$ python3 ~/netology/python/dns_ip/dns_ip.py
+<drive.google.com> - <64.233.165.194>
+<mail.google.com> - <216.58.211.5>
+<google.com> - <142.250.74.142>
+
+IP for mail.google.com is changed !
+[ERROR] <mail.google.com> IP mismatch: <216.58.211.5> <216.58.207.229>
+
+IP for google.com is changed !
+[ERROR] <google.com> IP mismatch: <142.250.74.142> <142.250.74.110>
+
 ```
 
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
