@@ -2,8 +2,44 @@
 
 ## Процесс установки и настройки ufw
 
-Есть скрипт:
-```bash
+ufw установлен: 
+```
+$ ufw version
+ufw 0.36
+Copyright 2008-2015 Canonical Ltd.
+```
+
+Добавление дефолтных правил: 
+```
+$ sudo ufw default deny incoming
+Default incoming policy changed to 'deny'
+(be sure to update your rules accordingly)
+
+$ sudo ufw default allow outgoing
+Default outgoing policy changed to 'allow'
+(be sure to update your rules accordingly)
+```
+Разрешаем входящие на 22 и 443 порт:
+```
+$ sudo ufw allow from 192.168.1.0/24 to any port ssh
+Rule added
+
+$ sudo ufw allow from 192.168.1.0/24 to any port https
+Rule added
+```
+Проверяем правила:
+
+```
+$ sudo ufw status verbose
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    192.168.1.0/24
+443/tcp                    ALLOW IN    192.168.1.0/24
 
 ```
 
@@ -16,7 +52,7 @@
 
 ## Процесс установки и настройки сервера nginx
  
-### Ваш скрипт:
+### 55:
 ```bash
 
 ```
@@ -24,7 +60,7 @@
 ## Страница сервера nginx в браузере хоста не содержит предупреждений
 
 
-### Ваш скрипт:
+### крипт:
 ```bash
 ???
 
@@ -33,7 +69,7 @@
 ## Скрипт генерации нового сертификата работает (сертификат сервера ngnix должен быть "зеленым")
 
 
-### Ваш скрипт:
+### скрипт:
 ```bash
 ???
 ```
