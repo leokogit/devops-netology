@@ -45,7 +45,8 @@ To                         Action      From
 
 ## Процесс установки и выпуска сертификата с помощью hashicorp vault
 
-Скачиваем deb пакет (ставим на Ubuntu) и устанавливаем:
+### Подготовка среды
+Скачиваем deb пакет (ставим на Ubuntu) и устанавливаем vault:
 ```bash
 
 $ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -55,6 +56,13 @@ $ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $
 $ sudo apt-get update && sudo apt-get install vault
 
 ```
+Устанавливаем утилиту jq для работы с JSON (jq tool to parse JSON output):
+
+```bash
+$ sudo apt-get install jq
+
+```
+
 
 ## Процесс установки и настройки сервера nginx
  
