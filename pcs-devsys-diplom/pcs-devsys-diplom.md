@@ -41,6 +41,7 @@ To                         Action      From
 22/tcp                     ALLOW IN    192.168.1.0/24
 443/tcp                    ALLOW IN    192.168.1.0/24
 ```
+---
 
 ## Процесс установки и выпуска сертификата с помощью hashicorp vault
 
@@ -238,16 +239,80 @@ vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
 $ vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
 Success! Data written to: pki_int/intermediate/set-signed
 ```
+### Шаг 3: Создаем роль
 
+Создаем роль с именем example-dot-com, которая разрешает поддомены.
 
-## Процесс установки и настройки сервера nginx
- 
-### 55:
 ```bash
-
+$ vault write pki_int/roles/example-dot-com \
+>      allowed_domains="example.com" \
+>      allow_subdomains=true \
+>      max_ttl="720h"
+Success! Data written to: pki_int/roles/example-dot-com
 ```
 
+### Шаг 4: Запрос сертификатов
+
+1. Запрашиваем новый сертификат для домена test.example.com на основе роли example-dot-com.
+
+```bash
+$ vault write -format=json pki_int/issue/example-dot-com common_name="test.example.com" ttl="720h" > ~/issue.crt
+```
+2. Извлекаем из JSON файла issue.crt данные по сертфикату и ключу и записываем в отдельные файлы: 
+
+```bash
+cat ~/issue.crt | jq -r .data.certificate > ~/test.example.crt.pem
+cat ~/issue.crt | jq -r .data.issuing_ca >> ~/test.example.crt.pem
+cat ~/issue.crt | jq -r .data.private_key > ~/test.example.key
+```
+---
+
+## Процесс установки и настройки сервера nginx
+
+Установка:
+```bash
+$ sudo apt install nginx
+```
+Настройка кофигурации (/etc/nginx/nginx.conf) :
+
+```nginx
+
+
+
+```
+sudo mkdir -p /var/www/test.example.com/html
+websrv1@websrv1:~$ ll /var/www/test.example.com/html
+total 8
+drwxr-xr-x 2 root root 4096 Jan 19 18:21 ./
+drwxr-xr-x 3 root root 4096 Jan 19 18:21 ../
+websrv1@websrv1:~$ sudo chown -R $USER:$USER /var/www/test.example.com/html
+websrv1@websrv1:~$ ll /var/www/test.example.com/html
+total 8
+drwxr-xr-x 2 websrv1 websrv1 4096 Jan 19 18:21 ./
+drwxr-xr-x 3 root    root    4096 Jan 19 18:21 ../
+websrv1@websrv1:~$ cd /var/www/test.example.com/html
+websrv1@websrv1:/var/www/test.example.com/html$ sudo chmod -R 755 /var/www/test.example.com/html
+websrv1@websrv1:/var/www/test.example.com/html$ ll
+total 8
+drwxr-xr-x 2 websrv1 websrv1 4096 Jan 19 18:21 ./
+drwxr-xr-x 3 root    root    4096 Jan 19 18:21 ../
+websrv1@websrv1:/var/www/test.example.com/html$ echo "Success! SSL is working!" > /var/www/test.example.com/html/index.html
+websrv1@websrv1:/var/www/test.example.com/html$ cat /var/www/test.example.com/html/index.html
+Success! SSL is working!
+websrv1@websrv1:/var/www/test.example.com/html$ sudo vim /etc/nginx/sites-available/test.example.com
+
+
+$ sudo vim /etc/nginx/sites-available/test.example.com
+$ sudo ln -s /etc/nginx/sites-available/test.example.com /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+openssl s_client -connect 127.0.0.1:443
+
+
 ## Страница сервера nginx в браузере хоста не содержит предупреждений
+
+Cкриншот:
+
+![stack](/pcs-devsys-diplom//crt.jpg "test.example.com")
 
 
 ### крипт:
