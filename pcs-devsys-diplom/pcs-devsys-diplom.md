@@ -176,26 +176,26 @@ root
 ```
 ### Шаг 1: Создание корневого ЦС
 
-Включаем секреты pki размещаемые в pki/.
+1. Включаем секреты pki размещаемые в pki/.
 
 ```bash
 $ vault secrets enable pki
 Success! Enabled the pki secrets engine at: pki/
 ```
-Настраиваем максимальное время жизни для сертификатов PKI (TTL) 87600 часов
+2. Настраиваем механизм секретов в pki/ на выдачу сертификатов с максимальным временем жизни (TTL) 87600 часов
 
 ```bash
 $ vault secrets tune -max-lease-ttl=87600h pki
 Success! Tuned the secrets engine at: pki/
 ```
-Генерируем корневой сертификат и сохраняем его в файле CA_cert.crt.
+3. Генерируем корневой сертификат и сохраняем его в файле CA_cert.crt.
 
 ```bash
 $ vault write -field=certificate pki/root/generate/internal \
      common_name="example.com" \
      ttl=87600h > CA_cert.crt
 ```
-Настраиваем CA and CRL URLs.
+4. Настраиваем CA and CRL URLs.
 
 ```bash
 $ vault write pki/config/urls \
@@ -206,13 +206,38 @@ $ vault write pki/config/urls \
 
 ### Шаг 2: Создание промежуточного ЦС
 
-Включаем секреты pki размещаемые в pki_int/
+1. Включаем секреты pki размещаемые в pki_int/
 
 ```bash
 $ vault secrets enable -path=pki_int pki
 Success! Enabled the pki secrets engine at: pki_int/
 ```
+2. Настраиваем механизм секретов в pki_int/ на выдачу сертификатов с максимальным временем жизни (TTL) 43800 часов.
 
+```bash
+$ vault secrets tune -max-lease-ttl=43800h pki_int
+Success! Tuned the secrets engine at: pki_int/
+```
+3. Генерируем промежуточный сертификат и сохраняем CSR в pki_intermediate.csr.
+
+```bash
+vault write -format=json pki_int/intermediate/generate/internal \
+     common_name="example.com Intermediate Authority" \
+     | jq -r '.data.csr' > pki_intermediate.csr
+```
+4. Подписываем промежуточный сертификат закрытым ключом корневого ЦС и сохраняем созданный сертификат в intermediate.cert.pem.
+
+```bash
+vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
+     format=pem_bundle ttl="43800h" \
+     | jq -r '.data.certificate' > intermediate.cert.pem
+```
+5. После того, как CSR подписан и корневой ЦС возвращает сертификат, его можно импортировать обратно в Vault.
+
+```bash
+$ vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
+Success! Data written to: pki_int/intermediate/set-signed
+```
 
 
 ## Процесс установки и настройки сервера nginx
