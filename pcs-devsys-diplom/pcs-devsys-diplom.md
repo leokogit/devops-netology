@@ -315,6 +315,13 @@ cat ~/issue.crt | jq -r .data.issuing_ca >> ~/test.example.crt
 cat ~/issue.crt | jq -r .data.private_key > ~/test.example.key
 sudo systemctl restart nginx
 ```
+
+Добавляем скрипт в crontab с запуском раз в месяц 20 числа в 01:20:
+```bash
+sudo crontab -e
+
+20 1 20 * * /home/webserv1/gencrt.sh >/dev/null 2>&1
+```
 ## Страница сервера nginx в браузере хоста не содержит предупреждений
 
 Cкриншот:
@@ -327,7 +334,27 @@ Cкриншот:
 
 ## Crontab работает (выберите число и время так, чтобы показать что crontab запускается и делает что надо)
 
+Для проверки работы crontab будем запускать скрипт каждые 5 мин, внесем измененения в crontab :
+
+```bash
+sudo crontab -e
+
+*/5 * * * * /home/webserv1/gencrt.sh >/dev/null 2>&1
+```
 Проверяем автозапуск скрипта:
 ```bash
-???
+$ sudo service rsyslog restart
+$ sudo service cron restart
+$ grep CRON /var/log/syslog
+
+Jan 20 00:17:01 websrv1 CRON[4030]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 20 01:17:01 websrv1 CRON[4063]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 20 02:17:01 websrv1 CRON[4384]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 20 03:10:01 websrv1 CRON[4782]: (root) CMD (test -e /run/systemd/system || SERVICE_MODE=1 /sbin/e2scrub_all -A -r)
+Jan 20 03:17:01 websrv1 CRON[5011]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 20 03:44:01 websrv1 cron[5102]: (CRON) INFO (pidfile fd = 3)
+Jan 20 03:44:01 websrv1 cron[5102]: (CRON) INFO (Skipping @reboot jobs -- not system startup)
+Jan 20 03:45:01 websrv1 CRON[5143]: (websrv1) CMD (/home/webserv1/gencrt.sh >/dev/null 2>&1)
+Jan 20 03:50:01 websrv1 CRON[5173]: (websrv1) CMD (/home/webserv1/gencrt.sh >/dev/null 2>&1)
+Jan 20 03:55:01 websrv1 CRON[5212]: (websrv1) CMD (/home/webserv1/gencrt.sh >/dev/null 2>&1)
 ```
