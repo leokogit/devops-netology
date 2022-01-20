@@ -204,7 +204,6 @@ $ vault write pki/config/urls \
      crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
 ```
 
-
 ### Шаг 2: Создание промежуточного ЦС
 
 1. Включаем секреты pki размещаемые в pki_int/
@@ -273,66 +272,62 @@ cat ~/issue.crt | jq -r .data.private_key > ~/test.example.key
 ```bash
 $ sudo apt install nginx
 ```
-Настройка кофигурации (/etc/nginx/nginx.conf) :
-
-```nginx
-
-
-
+Создаём тестовую страничку: 
+```bash
+$ sudo mkdir -p /var/www/test.example.com/html
+$ sudo chown -R $USER:$USER /var/www/test.example.com/html
+$ sudo chmod -R 755 /var/www/test.example.com/html
+$ echo "Success! SSL is working!" > /var/www/test.example.com/html/index.html
 ```
-sudo mkdir -p /var/www/test.example.com/html
-websrv1@websrv1:~$ ll /var/www/test.example.com/html
-total 8
-drwxr-xr-x 2 root root 4096 Jan 19 18:21 ./
-drwxr-xr-x 3 root root 4096 Jan 19 18:21 ../
-websrv1@websrv1:~$ sudo chown -R $USER:$USER /var/www/test.example.com/html
-websrv1@websrv1:~$ ll /var/www/test.example.com/html
-total 8
-drwxr-xr-x 2 websrv1 websrv1 4096 Jan 19 18:21 ./
-drwxr-xr-x 3 root    root    4096 Jan 19 18:21 ../
-websrv1@websrv1:~$ cd /var/www/test.example.com/html
-websrv1@websrv1:/var/www/test.example.com/html$ sudo chmod -R 755 /var/www/test.example.com/html
-websrv1@websrv1:/var/www/test.example.com/html$ ll
-total 8
-drwxr-xr-x 2 websrv1 websrv1 4096 Jan 19 18:21 ./
-drwxr-xr-x 3 root    root    4096 Jan 19 18:21 ../
-websrv1@websrv1:/var/www/test.example.com/html$ echo "Success! SSL is working!" > /var/www/test.example.com/html/index.html
-websrv1@websrv1:/var/www/test.example.com/html$ cat /var/www/test.example.com/html/index.html
-Success! SSL is working!
-websrv1@websrv1:/var/www/test.example.com/html$ sudo vim /etc/nginx/sites-available/test.example.com
+Настройка кофигурации (/etc/nginx/sites-available/test.example.com) :
+```nginx
+server {
+        root                    /var/www/test.example.com/html;
+        index                   index.html index.htm index.nginx-debian.html;
 
-
-$ sudo vim /etc/nginx/sites-available/test.example.com
+        listen                  443 ssl;
+        server_name             test.example.com;
+        ssl_certificate         /home/websrv1/test.example.crt;
+        ssl_certificate_key     /home/websrv1/test.example.key;
+        ssl_protocols           TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers             HIGH:!aNULL:!MD5;
+}
+```
+Добавляем в sites-enabled:
+```bash
 $ sudo ln -s /etc/nginx/sites-available/test.example.com /etc/nginx/sites-enabled/
+```
+Проверяем конфиг и перезапускаем nginx:
+```bash
+$ sudo nginx -t 
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+$ sudo systemctl restart nginx
+```
+Скрипт для генерации сертификата:
+```bash
+$ cat ./gencrt.sh 
+#!/usr/bin/env bash
+vault write -format=json pki_int/issue/example-dot-com common_name="test.example.com" ttl="720h" > ~/issue.crt
+cat ~/issue.crt | jq -r .data.certificate > ~/test.example.crt
+cat ~/issue.crt | jq -r .data.issuing_ca >> ~/test.example.crt
+cat ~/issue.crt | jq -r .data.private_key > ~/test.example.key
 sudo systemctl restart nginx
-openssl s_client -connect 127.0.0.1:443
-
-
+```
 ## Страница сервера nginx в браузере хоста не содержит предупреждений
 
 Cкриншот:
 
-![stack](/pcs-devsys-diplom//crt.jpg "test.example.com")
-
-
-### крипт:
-```bash
-???
-
-```
+![stack](/pcs-devsys-diplom/siteok.jpg "siteok")
 
 ## Скрипт генерации нового сертификата работает (сертификат сервера ngnix должен быть "зеленым")
 
-
-### скрипт:
-```bash
-???
-```
+![stack](/pcs-devsys-diplom/crt.jpg "test.example.com")
 
 ## Crontab работает (выберите число и время так, чтобы показать что crontab запускается и делает что надо)
 
-
-### Ваш скрипт:
+Проверяем автозапуск скрипта:
 ```bash
 ???
 ```
