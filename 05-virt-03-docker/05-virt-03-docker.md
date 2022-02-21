@@ -33,11 +33,11 @@ https://hub.docker.com/r/leokodocker/nginx/tags
 
 - Запускаем 1-го контейнера и подключаем ```/data``` 
 ```bash
-
+docker run -d -v /opt/docker/data:/data -it centos bash
 ```
 - Запуск 2-го контейнера и также подключаем ```/data``` 
 ```bash
-
+docker run -d -v /opt/docker/data:/data -it debian bash
 ```
 - Подключаемся к первому контейнеру и создаём текстовый файл в ```/data```
 ```bash
