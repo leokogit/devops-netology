@@ -39,16 +39,44 @@ docker run -d -v /opt/docker/data:/data -it centos bash
 ```bash
 docker run -d -v /opt/docker/data:/data -it debian bash
 ```
+```
+# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+4f8f75863316   debian    "bash"    2 minutes ago   Up 2 minutes             unruffled_williamson
+6085050b45d3   centos    "bash"    6 minutes ago   Up 6 minutes             gifted_panini
+```
+
 - Подключаемся к первому контейнеру и создаём текстовый файл в ```/data```
 ```bash
+# docker exec -it 6085050b45d3 bash
+
+[root@6085050b45d3 data]# echo test1_centos > text1.txt
+[root@6085050b45d3 data]# ls
+text1.txt
 
 ```
 - Добавляем еще один файл на хостовой машине в ```/data```
 ```bash
+# echo onemoretext > text2.txt
+/opt/docker/data# ls
+text1.txt  text2.txt
 
 ```
 - Подключаемся к второму контейнеру и отображаем листинг файлов в ```/data``` контейнера. 
 ```bash
+# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+4f8f75863316   debian    "bash"    2 minutes ago   Up 2 minutes             unruffled_williamson
+6085050b45d3   centos    "bash"    6 minutes ago   Up 6 minutes             gifted_panini
+
+# docker exec -it 4f8f75863316 bash
+root@4f8f75863316:/# cd /data/
+root@4f8f75863316:/data# ls -la
+total 16
+drwxr-xr-x 2 root root 4096 Feb 21 20:34 .
+drwxr-xr-x 1 root root 4096 Feb 21 20:25 ..
+-rw-r--r-- 1 root root   13 Feb 21 20:31 text1.txt
+-rw-r--r-- 1 root root   12 Feb 21 20:34 text2.txt
 
 ```
 ---
