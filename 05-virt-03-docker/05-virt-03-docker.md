@@ -31,7 +31,7 @@ https://hub.docker.com/r/leokodocker/nginx/tags
 
 ### Ответ:
 
-- Запускаем 1-го контейнера и подключаем ```/data``` 
+- Запускаем 1-й контейнера и подключаем ```/data``` 
 ```bash
 docker run -d -v /opt/docker/data:/data -it centos bash
 ```
@@ -45,7 +45,6 @@ CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAME
 4f8f75863316   debian    "bash"    2 minutes ago   Up 2 minutes             unruffled_williamson
 6085050b45d3   centos    "bash"    6 minutes ago   Up 6 minutes             gifted_panini
 ```
-
 - Подключаемся к первому контейнеру и создаём текстовый файл в ```/data```
 ```bash
 # docker exec -it 6085050b45d3 bash
@@ -58,7 +57,7 @@ text1.txt
 - Добавляем еще один файл на хостовой машине в ```/data```
 ```bash
 # echo onemoretext > text2.txt
-/opt/docker/data# ls
+# ls
 text1.txt  text2.txt
 
 ```
