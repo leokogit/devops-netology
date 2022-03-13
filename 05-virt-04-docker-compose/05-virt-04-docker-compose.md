@@ -10,7 +10,7 @@
 ### Ответ:
 
 <p align="center">
-  <img width="800" height="600" src="./assets/yc1.jpg">
+  <img width="800" height="600" src="./assets/yc1.png">
 </p>
 
 ---
