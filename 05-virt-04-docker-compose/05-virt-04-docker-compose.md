@@ -33,7 +33,7 @@
 ### Ответ:
 - Скриншот работающего веб-интерфейса Grafana с текущими метриками:
 <p align="center">
-  <img width="800" height="600" src="./assets/yc_02.png">
+  <img src="./assets/graf.png">
 </p>
 
 ---
