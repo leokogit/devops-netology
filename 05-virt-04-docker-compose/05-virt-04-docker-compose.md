@@ -22,7 +22,7 @@
 ### Ответ:
 
 <p align="center">
-  <img src="./assets/vm.png">
+  <img src="./assets/vm1.png">
 </p>
 
 ---
