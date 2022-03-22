@@ -9,11 +9,10 @@
 - В чём отличие режимов работы сервисов в Docker Swarm кластере: replication и global?
 - Какой алгоритм выбора лидера используется в Docker Swarm кластере?
 - Что такое Overlay Network?
-
 ### Ответ:
 - В режиме global одна задача службы swarm выполняется на всех узлах кластера. При добавлении нового узла в кластер, создается задача, и планировщик назначает задачу этому узлу. В режиме replication можно запустить определённое (задаваемое) количество идентичных задач (копий, реплик) распредилив их по всем узлам кластера, либо на одном из улов.  
 - RAFT. Протокол для реализации распределённого консенсуса. Любой из manager-узлов, в любой момент времени, может заменить leader-узел с помощью запросов и голосования, выбора лидера и соответственно, нахождения консенсунса по поводу состояния системы.
-- 
+- Overlay Network - виртуальная распределённая сеть поверх существующих "внутренних" сетей хостов, для успешной коммуникации между контейнерами и сервисами Docker swarm . 
 ---
 ## Задача 2
 
@@ -37,17 +36,14 @@ l55g5t4tlqi9ceve1qrstipsm     node06.netology.yc   Ready     Active             
 [root@node01 ~]# docker stack ls
 NAME               SERVICES   ORCHESTRATOR
 swarm_monitoring   8          Swarm
-
 ```
 ---
 ## Задача 3
 
 Создать ваш первый, готовый к боевой эксплуатации кластер мониторинга, состоящий из стека микросервисов.
-
 Для получения зачета, вам необходимо предоставить скриншот из терминала (консоли), с выводом команды:
 ```
-docker service ls
-     
+docker service ls    
 ```
 ### Ответ:
 ```
@@ -87,6 +83,5 @@ o0vdyyyt788n   swarm_monitoring_node-exporter.u7g9ajgzy1qb2oclqqu981it8      ste
 846r46o7x8a7   swarm_monitoring_node-exporter.z5fl7qwh1qqsayikdf1levv9u      stefanprodan/swarmprom-node-exporter:v0.16.0   node02.netology.yc   Running         Running 4 minutes ago             
 0umfvauady9q   swarm_monitoring_prometheus.1                                 stefanprodan/swarmprom-prometheus:v2.5.0       node02.netology.yc   Running         Running 4 minutes ago             
 v4cns0fwdfzs   swarm_monitoring_unsee.1                                      cloudflare/unsee:v0.8.0                        node02.netology.yc   Running         Running 4 minutes ago             
-
 ```
 ---
