@@ -238,5 +238,10 @@ test_db=# EXPLAIN SELECT * FROM clients c WHERE заказ is not null;
 Приведите список операций, который вы применяли для бэкапа данных и восстановления. 
 
 ### Ответ:
+Создание бэкапа:  
+``` root@d47056217a97:# pg_dump -U pguser test_db -f /backup/test_db_dump.sql ```
+
+Восстановление:   
+``` root@c4bf793c10c2:/backup# psql -U pguser -d test_db < /backup/test_db_dump.sql ```
 
 ---
