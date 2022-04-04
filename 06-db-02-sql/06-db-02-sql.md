@@ -40,7 +40,29 @@
 - список пользователей с правами над таблицами test_db
 
 ### Ответ:
+**Итоговый список БД**:
+``test_db=# \l``
+<p align="left">
+  <img src="./assets/db.jpg">
+</p>
+ 
+**Описание таблиц**:
+``test_db=# \dt``
+<p align="left">
+  <img src="./assets/dt.jpg">
+</p>
 
+**SQL-запрос для выдачи списка пользователей с правами над таблицами test_db**: 
+
+``SELECT table_name, grantee, privilege_type FROM information_schema.role_table_grants WHERE table_name in ('clients', 'orders');`` 
+
+**Cписок пользователей с правами над таблицами test_db**:
+
+<p align="left">
+  <img src="./assets/privileges.jpg">
+</p>
+
+ 
 ---
 ## Задача 3
 
