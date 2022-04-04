@@ -59,7 +59,7 @@
 **Cписок пользователей с правами над таблицами test_db**:
 
 <p align="left">
-  <img src="./assets/privileges.jpg">
+  <img src="./assets/priv.jpg">
 </p>
 
  
