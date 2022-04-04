@@ -10,8 +10,32 @@
 
 Приведите получившуюся команду или docker-compose манифест.
 ### Ответ:
-
-
+```
+~/netology/06-db-02-sql$ cat docker-compose.yaml 
+version: '3.1'
+services:
+  postgres:
+    image: postgres:12
+    restart: always  
+    environment:
+      POSTGRES_DB: "pgdb"
+      POSTGRES_USER: "pguser"
+      POSTGRES_PASSWORD: "pgPass123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - data:/var/lib/postgresql/data/pgdata
+      - backup:/backup
+    ports:
+      - "5432:5432"    
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+volumes:
+  data: {}
+  backup: {}           
+```
 ---
 ## Задача 2
 
