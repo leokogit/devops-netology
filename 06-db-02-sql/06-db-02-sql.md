@@ -243,5 +243,5 @@ test_db=# EXPLAIN SELECT * FROM clients c WHERE заказ is not null;
 
 Восстановление:   
 ``` root@c4bf793c10c2:/backup# psql -U pguser -d test_db < /backup/test_db_dump.sql ```
-
+ 
 ---
