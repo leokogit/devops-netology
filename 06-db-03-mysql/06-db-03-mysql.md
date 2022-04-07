@@ -86,7 +86,6 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE USER='test';
 | test | localhost | {"fname": "James", "lname": "Pretty"} |
 +------+-----------+---------------------------------------+
 1 row in set (0.00 sec)
-
 ```
 ---
 ## Задача 3
@@ -128,7 +127,6 @@ mysql> SHOW PROFILES;
 +----------+------------+------------------------------------------------------+
 |       14 | 0.04141975 | ALTER TABLE orders ENGINE = InnoDB                   |
 +----------+------------+------------------------------------------------------+
-
 ```
 ---
 ## Задача 4 
