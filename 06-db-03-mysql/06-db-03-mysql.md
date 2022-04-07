@@ -21,7 +21,32 @@
 В следующих заданиях мы будем продолжать работу с данным контейнером.
 ### Ответ:
 ```
- 
+root@67b1a97d3975:/# mysql -u root -p
+
+mysql> \s
+Server version:         8.0.28 MySQL Community Server - GPL
+
+mysql> \u test_db
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+mysql> SHOW TABLES;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| orders            |
++-------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT count(*) FROM orders WHERE price > 300;
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
 ```
 ---
 ## Задача 2
@@ -41,7 +66,27 @@
 **приведите в ответе к задаче**.
 ### Ответ:
 ```
- 
+mysql> CREATE USER 'test'@'localhost' IDENTIFIED WITH mysql_native_password BY 'test-pass'
+    -> WITH MAX_QUERIES_PER_HOUR 100
+    -> PASSWORD EXPIRE INTERVAL 180 DAY
+    -> FAILED_LOGIN_ATTEMPTS 3
+    -> ATTRIBUTE '{"fname": "James", "lname": "Pretty"}';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT SELECT ON test_db.* TO test@localhost;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE USER='test';
++------+-----------+---------------------------------------+
+| USER | HOST      | ATTRIBUTE                             |
++------+-----------+---------------------------------------+
+| test | localhost | {"fname": "James", "lname": "Pretty"} |
++------+-----------+---------------------------------------+
+1 row in set (0.00 sec)
+
 ```
 ---
 ## Задача 3
@@ -56,7 +101,34 @@
 - на `InnoDB`
 ### Ответ:
 ```
+ mysql> SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES WHERE table_name = 'orders';
++------------+--------+
+| TABLE_NAME | ENGINE |
++------------+--------+
+| orders     | InnoDB |
++------------+--------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE orders ENGINE = MyISAM;
  
+mysql> SHOW PROFILES;
++----------+------------+-----------------------------------------------------+
+| Query_ID | Duration   | Query                                               |
++----------+------------+-----------------------------------------------------+
+|       12 | 0.04237250 | ALTER TABLE orders ENGINE = MyISAM                  |
++----------+------------+-----------------------------------------------------+
+
+mysql> ALTER TABLE orders ENGINE = InnoDB;
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SHOW PROFILES;
++----------+------------+------------------------------------------------------+
+| Query_ID | Duration   | Query                                                |
++----------+------------+------------------------------------------------------+
+|       14 | 0.04141975 | ALTER TABLE orders ENGINE = InnoDB                   |
++----------+------------+------------------------------------------------------+
+
 ```
 ---
 ## Задача 4 
