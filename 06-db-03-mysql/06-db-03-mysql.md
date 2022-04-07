@@ -145,6 +145,12 @@ mysql> SHOW PROFILES;
 Приведите в ответе измененный файл `my.cnf`.
 ### Ответ:
 ```
- 
-```
+ [mysqld]
+innodb_flush_method=O_DSYNC
+innodb_flush_log_at_trx_commit=2
+innodb_file_format=Barracuda
+innodb_log_buffer_size = 1M
+innodb_buffer_pool_size = 1G
+innodb_log_file_size=100M
+ ```
 ---
