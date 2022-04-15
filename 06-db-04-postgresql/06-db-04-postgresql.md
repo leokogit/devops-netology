@@ -49,7 +49,27 @@
 
 ### Ответ:
 ```
+# \c test_database
 
+test_database=# \dt
+         List of relations
+ Schema |  Name  | Type  |  Owner   
+--------+--------+-------+----------
+ public | orders | table | postgres
+(1 row)
+
+test_database=# analyze VERBOSE orders;
+INFO:  analyzing "public.orders"
+INFO:  "orders": scanned 1 of 1 pages, containing 8 live rows and 0 dead rows; 8 rows in sample, 8 estimated total rows
+ANALYZE
+
+test_database=# SELECT avg_width FROM pg_stats WHERE tablename='orders';
+ avg_width 
+-----------
+         4
+        16
+         4
+(3 rows)
 ```
 ---
 ## Задача 3
@@ -63,7 +83,25 @@
 Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?
 ### Ответ:
 ```
+test_database=# CREATE TABLE orders_1 (CHECK (price > 499)) INHERITS (orders);
+CREATE TABLE
+test_database=# CREATE TABLE orders_2 (CHECK (price <= 499)) INHERITS (orders);
+CREATE TABLE
 
+test_database=# CREATE RULE more_499 AS ON INSERT TO orders WHERE ( price > 499 ) DO INSTEAD INSERT INTO orders_1 VALUES (NEW.*);
+CREATE RULE
+test_database=# CREATE RULE less_499 AS ON INSERT TO orders WHERE ( price <= 499 ) DO INSTEAD INSERT INTO orders_2 VALUES (NEW.*);
+CREATE RULE
+
+Да, можно было исключить ручное разбиение, если таблица изначально была бы партиционированна 
+
+CREATE TABLE public.orders (
+    id integer NOT NULL,
+    title varchar(80) NOT NULL,
+    price integer DEFAULT 0
+) PARTITION BY RANGE(price);
+CREATE TABLE public.orders_1 PARTITION OF public.orders FOR VALUES FROM (MINVALUE) TO (499);
+CREATE TABLE public.orders_2 PARTITION OF public.orders FOR VALUES FROM (499) TO (MAXVALUE);
 ```
 ---
 ## Задача 4
