@@ -27,7 +27,6 @@
 \dt+   Просмотр списка всех таблиц с описанием в текущей базе данных
 
 \q     Выход из psql
-
 ```
 ---
 ## Задача 2
@@ -96,9 +95,9 @@ CREATE RULE
 Да, можно было исключить ручное разбиение, если таблица изначально была бы партиционированна 
 
 CREATE TABLE public.orders (
-    id integer NOT NULL,
-    title varchar(80) NOT NULL,
-    price integer DEFAULT 0
+    id integer,
+    title varchar(80),
+    price integer
 ) PARTITION BY RANGE(price);
 CREATE TABLE public.orders_1 PARTITION OF public.orders FOR VALUES FROM (MINVALUE) TO (499);
 CREATE TABLE public.orders_2 PARTITION OF public.orders FOR VALUES FROM (499) TO (MAXVALUE);
@@ -111,6 +110,17 @@ CREATE TABLE public.orders_2 PARTITION OF public.orders FOR VALUES FROM (499) TO
 Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?
 ### Ответ:
 ```
+# pg_dump test_database > pg_backup/test_database2.sql
 
+В бэкапе при создании таблицы orders:
+
+CREATE TABLE public.orders (
+    id integer NOT NULL,
+    title character varying(80) NOT NULL,
+    price integer DEFAULT 0
+    CONSTRAINT title_uniq UNIQUE (title)
+);
+
+Либо добавлять первичный ключ
 ```
 ---
