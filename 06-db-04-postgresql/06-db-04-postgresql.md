@@ -1,4 +1,4 @@
-## 06-db-03-mysql.
+## 06-db-04-postgresql.
 ### ДЗ. "6.4. PostgreSQL".
 ---
 ## Задача 1
