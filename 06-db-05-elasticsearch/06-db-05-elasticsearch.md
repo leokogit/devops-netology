@@ -2,14 +2,7 @@
 ### ДЗ. "6.5. Elasticsearch".
 
 ## Задача 1
-
-В этом задании вы потренируетесь в:
-- установке elasticsearch
-- первоначальном конфигурировании elastcisearch
-- запуске elasticsearch в docker
-
 Используя докер образ [elasticsearch:7](https://hub.docker.com/_/elasticsearch) как базовый:
-
 - составьте Dockerfile-манифест для elasticsearch
 - соберите docker-образ и сделайте `push` в ваш docker.io репозиторий
 - запустите контейнер из получившегося образа и выполните запрос пути `/` c хост-машины
