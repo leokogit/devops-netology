@@ -27,8 +27,46 @@
 
 Далее мы будем работать с данным экземпляром elasticsearch.
 ### Ответ:
+#### Dockerfile 
 ```
+~/netology/06-db-05-elasticsearch$ cat Dockerfile 
 
+FROM centos:7
+LABEL Netology 6.5:Elasticsearch
+MAINTAINER leokodocker
+
+RUN yum upgrade -y
+RUN yum install wget -y
+RUN yum install perl-Digest-SHA -y
+RUN yum install java-11-openjdk -y
+
+#RUN  wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.3-linux-x86_64.tar.gz \
+#    &&  wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.3-linux-x86_64.tar.gz.sha512
+COPY elasticsearch-7.17.3-linux-x86_64.tar.gz /.
+COPY elasticsearch-7.17.3-linux-x86_64.tar.gz.sha512 /.
+RUN shasum -a 512 -c elasticsearch-7.17.3-linux-x86_64.tar.gz.sha512 \
+    && tar -xzf elasticsearch-7.17.3-linux-x86_64.tar.gz \
+    && rm -f elasticsearch-7.17.3-linux-x86_64.tar.gz \
+    && mv /elasticsearch-7.17.3 /elasticsearch
+# copy the configuration file into the container
+COPY elasticsearch.yml /elasticsearch/config/
+RUN groupadd -g 1000 elasticsearch && useradd elasticsearch -u 1000 -g 1000
+ENV ES_JAVA_HOME=/usr/
+#WORKDIR /data
+RUN mkdir /var/lib/logs /var/lib/data /elasticsearch/snapshots
+
+RUN chown -R elasticsearch:elasticsearch /elasticsearch && \
+    chown elasticsearch:elasticsearch /var/lib/logs && \
+    chown elasticsearch:elasticsearch /var/lib/data
+
+USER elasticsearch
+CMD ["/elasticsearch/bin/elasticsearch"]
+
+```
+#### Cсылкa на образ в репозитории dockerhub
+https://hub.docker.com/r/leokodocker/es
+#### Ответ `elasticsearch` на запрос пути `/` в json виде
+```
 
 ```
 ---
@@ -62,10 +100,23 @@
 иначе возможна потеря данных индексов, вплоть до полной, при деградации системы.
 
 ### Ответ:
+#### Получите список индексов и их статусов
+
+```
+
+```
+#### Получите состояние кластера `elasticsearch`
+```
+
+```
+#### Как вы думаете, почему часть индексов и кластер находится в состоянии yellow?
+
+#### Удалите все индексы
+```
+
 ```
 
 
-```
 ---
 ## Задача 3
 
