@@ -67,7 +67,23 @@ CMD ["/elasticsearch/bin/elasticsearch"]
 https://hub.docker.com/r/leokodocker/es
 #### Ответ `elasticsearch` на запрос пути `/` в json виде
 ```
-
+{
+  "name" : "netology_test",
+  "cluster_name" : "netology_es",
+  "cluster_uuid" : "SyOU-_VDRcKNhvMrsW8J0Q",
+  "version" : {
+    "number" : "7.17.3",
+    "build_flavor" : "default",
+    "build_type" : "tar",
+    "build_hash" : "5ad023604c8d7416c9eb6c0eadb62b14e766caff",
+    "build_date" : "2022-04-19T08:11:19.070913226Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.11.1",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
 ```
 ---
 ## Задача 2
