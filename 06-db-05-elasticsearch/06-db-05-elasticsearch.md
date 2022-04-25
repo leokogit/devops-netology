@@ -118,24 +118,148 @@ https://hub.docker.com/r/leokodocker/es
 ### Ответ:
 #### Добавление индексов
 ```
-
+$ curl -X PUT "localhost:9200/ind-1?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  }
+}
+'
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "ind-1"
+}
+$ curl -X PUT "localhost:9200/ind-2?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 1
+  }
+}
+'
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "ind-2"
+}
+$ curl -X PUT "localhost:9200/ind-3?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_shards": 4,
+    "number_of_replicas": 2
+  }
+}
+'
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "ind-3"
+}
 ```
 #### Получите список индексов и их статусов
 ```
+$ curl -X GET 'http://localhost:9200/_cat/indices?v' 
+health status index            uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .geoip_databases NllpwcV9RaCtcxtckSFB-A   1   0         40            0     37.9mb         37.9mb
+green  open   ind-1            -cn-aaNaTXWtQojZE_Mvmg   1   0          0            0       226b           226b
+yellow open   ind-3            VQ4oNCzNRnGi4NNpbkg_Fw   4   2          0            0       904b           904b
+yellow open   ind-2            NChCk76yRPGP13RI84HfpA   2   1          0            0       452b           452b
 
+$ curl -X GET 'http://localhost:9200/_cluster/health/ind-1?pretty'
+{
+  "cluster_name" : "netology_es",
+  "status" : "green",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 1,
+  "active_shards" : 1,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 0,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 100.0
+}
+$ curl -X GET 'http://localhost:9200/_cluster/health/ind-2?pretty'
+{
+  "cluster_name" : "netology_es",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 2,
+  "active_shards" : 2,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 2,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 50.0
+}
+$ curl -X GET 'http://localhost:9200/_cluster/health/ind-3?pretty'
+{
+  "cluster_name" : "netology_es",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 4,
+  "active_shards" : 4,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 8,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 50.0
+}
 ```
 #### Получите состояние кластера `elasticsearch`
 ```
-
+$ curl -XGET localhost:9200/_cluster/health/?pretty=true
+{
+  "cluster_name" : "netology_es",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 10,
+  "active_shards" : 10,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 10,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 50.0
+}
 ```
 #### Как вы думаете, почему часть индексов и кластер находится в состоянии yellow?
-
+У нас один хост в кластере (ES также сконфигурирован в single-node), одна нода. ind-2 и ind-3 создавались с репликами, но у нас нет достаточного количества хостов для репликации.   
 #### Удалите все индексы
 ```
-
+$ curl -X DELETE 'http://localhost:9200/ind-1?pretty'
+{
+  "acknowledged" : true
+}
+$ curl -X DELETE 'http://localhost:9200/ind-2?pretty'
+{
+  "acknowledged" : true
+}
+$ curl -X DELETE 'http://localhost:9200/ind-3?pretty'
+{
+  "acknowledged" : true
+}
 ```
-
-
 ---
 ## Задача 3
 
