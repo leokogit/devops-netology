@@ -265,7 +265,11 @@ $ curl -X DELETE 'http://localhost:9200/ind-3?pretty'
 
 В данном задании вы научитесь:
 - создавать бэкапы данных
-- восстанавливать индексы из бэкапов
+- восстанавливать индексы $ curl -X GET 'http://localhost:9200/_cat/indices?v' 
+health status index            uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .geoip_databases NllpwcV9RaCtcxtckSFB-A   1   0         40            0     37.9mb         37.9mb
+green  open   test-2           jSi_wlMnSlyVrALjmorX2g   1   0          0            0       226b           226b
+из бэкапов
 
 Создайте директорию `{путь до корневой директории с elasticsearch в образе}/snapshots`.
 
@@ -290,10 +294,172 @@ $ curl -X DELETE 'http://localhost:9200/ind-3?pretty'
 
 Подсказки:
 - возможно вам понадобится доработать `elasticsearch.yml` в части директивы `path.repo` и перезапустить `elasticsearch`
-
+Рtc
 ### Ответ:
+#### Регистрация `snapshot repository` c именем `netology_backup`
 ```
+[elasticsearch@elastic /]$ ll /elasticsearch/snapshots/
+total 0
+```
+```
+$ curl -X PUT "localhost:9200/_snapshot/netology_backup?pretty" -H 'Content-Type: application/json' -d'
+{
+  "type": "fs",
+  "settings": {
+    "location": "/elasticsearch/snapshots"
+  }
+}
+'
+```
+Вывод в консоли:
+```
+{
+  "acknowledged" : true
+}
+```
+```
+$ curl -X GET "localhost:9200/_snapshot/netology_backup?pretty"
+```
+Вывод в консоли:
+```
+{
+  "netology_backup" : {
+    "type" : "fs",
+    "settings" : {
+      "location" : "/elasticsearch/snapshots"
+    }
+  }
+}
+```
+#### Создание индекса `test` с 0 реплик и 1 шардом и вывод списка индексов
+```
+$ curl -X PUT "localhost:9200/test?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  }
+}
+'
+```
+Вывод в консоли:
+```
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "test"
+}
+```
+```
+$ curl -X GET 'http://localhost:9200/_cat/indices?v' 
+```
+Вывод в консоли:
+```
+health status index            uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .geoip_databases NllpwcV9RaCtcxtckSFB-A   1   0         40            0     37.9mb         37.9mb
+green  open   test             G7CMtHVbQvi8tt6yKtnDcA   1   0          0            0       226b           226b
+```
+#### Создание `snapshot` состояния кластера `elasticsearch`
+```
+$ curl -X PUT "localhost:9200/_snapshot/netology_backup/elasticsearch?wait_for_completion=true&pretty"
+```
+Вывод в консоли:
+```
+{
+  "snapshot" : {
+    "snapshot" : "elasticsearch",
+    "uuid" : "-NwzbdZvQJOHlKsDgcHn-Q",
+    "repository" : "netology_backup",
+    "version_id" : 7170399,
+    "version" : "7.17.3",
+    "indices" : [
+      "test",
+      ".geoip_databases",
+      ".ds-.logs-deprecation.elasticsearch-default-2022.04.25-000001",
+      ".ds-ilm-history-5-2022.04.25-000001"
+    ],
+    "data_streams" : [
+      "ilm-history-5",
+      ".logs-deprecation.elasticsearch-default"
+    ],
+    "include_global_state" : true,
+    "state" : "SUCCESS",
+    "start_time" : "2022-04-26T11:57:53.419Z",
+    "start_time_in_millis" : 1650974273419,
+    "end_time" : "2022-04-26T11:57:54.620Z",
+    "end_time_in_millis" : 1650974274620,
+    "duration_in_millis" : 1201,
+    "failures" : [ ],
+    "shards" : {
+      "total" : 4,
+      "failed" : 0,
+      "successful" : 4
+    },
+    "feature_states" : [
+      {
+        "feature_name" : "geoip",
+        "indices" : [
+          ".geoip_databases"
+        ]
+      }
+    ]
+  }
+}
+```
+#### Cписок файлов в директории со `snapshot`ами
+```
+$ ll /elasticsearch/snapshots/
 
+total 48
+-rw-r--r-- 1 elasticsearch elasticsearch  1425 Apr 26 11:57 index-0
+-rw-r--r-- 1 elasticsearch elasticsearch     8 Apr 26 11:57 index.latest
+drwxr-xr-x 6 elasticsearch elasticsearch  4096 Apr 26 11:57 indices
+-rw-r--r-- 1 elasticsearch elasticsearch 29284 Apr 26 11:57 meta--NwzbdZvQJOHlKsDgcHn-Q.dat
+-rw-r--r-- 1 elasticsearch elasticsearch   712 Apr 26 11:57 snap--NwzbdZvQJOHlKsDgcHn-Q.dat
+```
+#### Удаление индекса `test` и создание индекса `test-2`. список индексов
+```
+$ curl -X DELETE 'http://localhost:9200/test?pretty'
+{
+  "acknowledged" : true
+}
 
+$ curl -X PUT "localhost:9200/test-2?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  }
+}
+'
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "test-2"
+}
+
+$ curl -X GET 'http://localhost:9200/_cat/indices?v' 
+
+health status index            uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .geoip_databases NllpwcV9RaCtcxtckSFB-A   1   0         40            0     37.9mb         37.9mb
+green  open   test-2           jSi_wlMnSlyVrALjmorX2g   1   0          0            0       226b           226b
+```
+#### Восстановление состояния кластера `elasticsearch` из `snapshot`, созданного ранее. Запрос к API восстановления и итоговый список индексов
+```
+$ curl -X POST "localhost:9200/_snapshot/netology_backup/elasticsearch/_restore?pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "test",
+  "include_global_state": true
+}
+'
+{
+  "accepted" : true
+}
+$ curl -X GET 'http://localhost:9200/_cat/indices?v'
+
+health status index            uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .geoip_databases jKhBDuKlRbqSgtHMKBDvJQ   1   0         55           10     66.9mb         66.9mb
+green  open   test-2           jSi_wlMnSlyVrALjmorX2g   1   0          0            0       226b           226b
+green  open   test             nxW49Kk6SOqAAMc3Ho6UBg   1   0          0            0       226b           226b
 ```
 ---
