@@ -23,6 +23,8 @@ db.currentOp(
      "ns" : /^db1\./
    }
 )
+
+db.currentOp({“secs_running”: {$gte: 120}}) 
 ~~~
 ## Задача 2
 
