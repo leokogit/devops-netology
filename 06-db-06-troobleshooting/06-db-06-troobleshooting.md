@@ -30,7 +30,8 @@ db.currentOp({“secs_running”: {$gte: 120}})
 ~~~ 
 db.custom_data.find({"application_id" : 36530,"class_name" : "Logs","UniqueId" : "a6f338db7ea728e0"}).explain('executionStats')
 ~~~  
-4) 
+4) Сохраним состояние БД, сделаем бэкап если информация критичная либо есть риски. 
+5) Завершим зависший запрос
 
 ## Задача 2
 
