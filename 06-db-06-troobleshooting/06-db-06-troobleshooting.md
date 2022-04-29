@@ -24,11 +24,14 @@ db.currentOp(
    }
 )
 
-db.currentOp({“secs_running”: {$gte: 120}}) 
-3) Посмотрим что конретно замедляет процесс выполнения запроса с помощью explain('executionStats'): пример 
-db.custom_data.find({"application_id" : 36530,"class_name" : "Logs","UniqueId" : "a6f338db7ea728e0"}).explain('executionStats')
-4) 
+db.currentOp({“secs_running”: {$gte: 120}})  
 ~~~
+3) Посмотрим что конретно замедляет процесс выполнения запроса с помощью explain('executionStats'): пример
+~~~ 
+db.custom_data.find({"application_id" : 36530,"class_name" : "Logs","UniqueId" : "a6f338db7ea728e0"}).explain('executionStats')
+~~~  
+4) 
+
 ## Задача 2
 
 Перед выполнением задания познакомьтесь с документацией по [Redis latency troobleshooting](https://redis.io/topics/latency).
