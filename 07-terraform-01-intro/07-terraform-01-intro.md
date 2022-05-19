@@ -79,6 +79,12 @@ on linux_amd64
 
 #### Ответ
 ```
+скачанный terraform 0.12.0 версии был переименован (terraform12) и помещён рядом с основной версией в usr/local/bin
+$ terraform --version
+Terraform v1.1.6
+on linux_amd64
 
+$ terraform12 --version
+Terraform v0.12.0
 ```
 ---
