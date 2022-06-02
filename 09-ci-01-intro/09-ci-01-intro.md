@@ -37,4 +37,8 @@
 
 ![bug](/09-ci-01-intro/bug.jpg "bug")
 
+Скриншот Workflow для задач с типом task (упрощенный ,остальные задачи)
+
+![other](/09-ci-01-intro/other.jpg "other")
+
 ---
