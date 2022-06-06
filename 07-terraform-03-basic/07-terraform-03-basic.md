@@ -11,6 +11,29 @@
 1. Зарегистрируйте бэкэнд в терраформ проекте как описано по ссылке выше. 
 
 ### Ответ
+Для решения задачи используется Yandex Cloud  
+
+1. Создан сервисный аккаунт и назначена роль editor
+``` 
+yc iam service-account create --name terraform-bot \
+  --description "terraform-bot"
+
+yc resource-manager folder add-access-binding my-folder \
+  --role editor \
+  --subject serviceAccount:***
+
+```
+3. Создан IAM-токен для сервисного аккаунта, получены статические ключи (для работы с S3 хранилищем), ключи помещены в переменные окружени (env)
+``` 
+Создаём IAM-ключ для сервисного аккаунта (этот ключ будет использован вместо основного токена для авторизации, в provider будет указан service_account_key_file = "key.json" вместо token):
+yc iam key create --folder-name netology --service-account-name terraform-bot --output key.json
+
+Создаём статические ключи доступа для сервисного аккаунта и помещаем в env:
+yc iam access-key create --service-account-name terraform-bot --description "for s3 bucket"
+
+export YC_STORAGE_ACCESS_KEY=''
+export YC_STORAGE_SECRET_KEY=''
+```
 
 ## Задача 2. Инициализируем проект и создаем воркспейсы. 
 
