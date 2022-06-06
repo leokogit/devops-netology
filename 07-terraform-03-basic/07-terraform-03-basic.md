@@ -18,6 +18,8 @@
 yc iam service-account create --name terraform-bot \
   --description "terraform-bot"
 
+роль добавлена через консоль управления Yandex cloud , но можно и через cli
+
 yc resource-manager folder add-access-binding my-folder \
   --role editor \
   --subject serviceAccount:***
