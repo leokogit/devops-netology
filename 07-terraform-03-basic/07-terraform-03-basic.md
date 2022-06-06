@@ -388,6 +388,15 @@ Changes to Outputs:
     }
 
 ```
+Виртуальные машины создаются по заданному плану: 
+<p align="center">
+  <img src="prod.jpg">
+</p>
+
+Состояния сохраняются в бакете: 
+<p align="center">
+  <img src="bucket_states.jpg">
+</p>
 
 Примечание для себя: 
 После добавления в конфигурацию бэкэнда, для авторизации нужно добавить в переменные среды статические ключи, но не YC_STORAGE_ACCESS_KEY и YC_STORAGE_SECRET_KEY, а
