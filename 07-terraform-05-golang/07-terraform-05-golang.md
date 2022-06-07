@@ -8,9 +8,10 @@
 2. Так же для тестирования кода можно использовать песочницу: [https://play.golang.org/](https://play.golang.org/).
 
 ### Ответ
-golang установлен:
+golang установил:
 ``` 
-
+$ go version
+go version go1.18.3 linux/amd64
 ```
 ---
 ## Задача 2. Знакомство с gotour.
