@@ -44,10 +44,9 @@ Plan и apply выполнен успешно, ресурсы создались
  
 В качестве результата приложите ссылку на файлы `server.yaml` и `atlantis.yaml`.
 ### Ответ
-111:
-``` 
++ [server.yaml](https://github.com/leokogit/devops-netology/blob/main/07-terraform-04-teamwork/server.yaml)
++ [atlantis.yaml](https://github.com/leokogit/devops-netology/blob/main/07-terraform-04-teamwork/atlantis.yaml)
 
-```
 ---
 ## Задача 3. Знакомство с каталогом модулей. 
 <details><summary>Спойлер, задача 3</summary>
