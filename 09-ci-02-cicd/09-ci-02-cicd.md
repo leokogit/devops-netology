@@ -84,9 +84,53 @@ Cкриншот успешного прохождения анализа:
 3. Проверяем директорию `~/.m2/repository/`, находим наш артефакт
 4. В ответе присылаем исправленный файл `pom.xml`
 
-### Ответ
+### Ответ      
 ```
+$ mvn --version
+Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
+Maven home: /home/leo/netology/mvn
+Java version: 11.0.15, vendor: Private Build, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "5.13.0-44-lowlatency", arch: "amd64", family: "unix"
+```
+Проверяем директорию `~/.m2/repository/`:    
+```
+~/.m2/repository/netology/java/8_282$ ll
+total 28
+drwxrwxr-x 2 leo leo 4096 июн 19 21:30 ./
+drwxrwxr-x 3 leo leo 4096 июн 19 21:28 ../
+-rw-rw-r-- 1 leo leo    2 июн 19 21:28 java-8_282-distrib.tar.gz
+-rw-rw-r-- 1 leo leo   40 июн 19 21:28 java-8_282-distrib.tar.gz.sha1
+-rw-rw-r-- 1 leo leo  350 июн 19 21:28 java-8_282.pom
+-rw-rw-r-- 1 leo leo   40 июн 19 21:28 java-8_282.pom.sha1
+-rw-rw-r-- 1 leo leo  199 июн 19 21:28 _remote.repositories
+```
+Исправленный файл `pom.xml`:      
 
 ```
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.netology.app</groupId>
+  <artifactId>simple-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+   <repositories>
+    <repository>
+      <id>my-repo</id>
+      <name>maven-public</name>
+      <url>http://localhost:8081/repository/maven-public/</url>
+    </repository>
+  </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>netology</groupId>
+      <artifactId>java</artifactId>
+      <version>8_282</version>
+      <classifier>distrib</classifier>
+      <type>tar.gz</type>
+    </dependency>
+  </dependencies>
+</project>
+```
 ---
