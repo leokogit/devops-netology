@@ -36,6 +36,10 @@ $ cat group_vars/all/examp.yml
 ```
 3. Воспользоваться подготовленным (используется `docker`) или создать собственное окружение для проведения дальнейших испытаний.
 ```
+$ sudo docker ps -a
+CONTAINER ID   IMAGE      COMMAND       CREATED              STATUS                          PORTS     NAMES
+688204fdd669   ubuntu     "bash"        3 seconds ago        Exited (0) 3 seconds ago                  ubuntu
+86dc994722ab   centos:7   "/bin/bash"   About a minute ago   Exited (0) About a minute ago             centos7
 ```
 4. Запуск playbook на окружении из `prod.yml`. Зафиксировать полученные значения `some_fact` для каждого из `managed host`.
 ```
