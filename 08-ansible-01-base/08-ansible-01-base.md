@@ -147,12 +147,15 @@ ok: [ubuntu] => {
     "msg": "deb default fact"
 }
 
-PLAY RECAP ************************************************************************************************
-centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+PLAY RECAP **********************************************************************************************
+centos7                : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+ubuntu                 : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 ```
 9. Посмотрите при помощи `ansible-doc` список плагинов для подключения. Выберите подходящий для работы на `control node`.
 ```
+$ ansible-doc -t connection -l | grep controller
+community.docker.nsenter       execute on host running controller container
+local                          execute on controller                       
 ```
 10. В `prod.yml` добавьте новую группу хостов с именем  `local`, в ней разместите localhost с необходимым типом подключения.
 ```
