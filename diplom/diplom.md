@@ -170,9 +170,9 @@ Master_SSL_Verify_Server_Cert: No
 ---
 ### 5. Установка WordPress . В процессе
 
-+   Разработана Ansible роль для установки WordPress. В процессе
++   Разработана Ansible роль для установки WordPress. Сделано
 
-1. Установлен [WordPress](https://wordpress.org/download/).    В процессе 
+1. Установлен [WordPress](https://wordpress.org/download/).    Сделано 
 
 результаты: В процессе
 
@@ -181,6 +181,13 @@ Master_SSL_Verify_Server_Cert: No
     - `https://www.you.domain` (WordPress)
 3. На сервере `you.domain` отредактирован upstream для выше указанного URL и он смотрит на виртуальную машину на которой установлен WordPress.
 4. В браузере можно открыть URL `https://www.you.domain` и увидеть главную страницу WordPress.
+
+Резульаты: 
++  Создана ansible роль для установки Nginx + php-fpm + Wordpress
++  Wordpress успешно подключается к базе данных (db01.domain_name.ru), нет ошибок nginx и самого wordpress (debug), после прогона роли можно зайти на сайт (db01.domain_name.ru) откроется первичная настройка wordpress (выбор языка, создание пользователя wordpress) , ошибок сертификата нет.
+
+<p align="center"> <img src="./assets/wordpress.jpg"></p>
+
 ---
 ### 6. Настроить CI/CD для автоматического развёртывания приложения. (Установка Gitlab CE и Gitlab Runner) .  В процессе
 
