@@ -232,5 +232,10 @@ Master_SSL_Verify_Server_Cert: No
   - `https://grafana.you.domain` (Grafana)
   - `https://prometheus.you.domain` (Prometheus)
   - `https://alertmanager.you.domain` (Alert Manager)
-  
+
+Результаты: 
+
+Итоговая схема инфраструктуры: 
+<p align="center"> <img src="./assets/schema.jpg"></p>
+
 ---
