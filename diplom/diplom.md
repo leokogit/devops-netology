@@ -168,7 +168,7 @@ Master_SSL_Verify_Server_Cert: No
 1 row in set, 1 warning (0.00 sec)
 ```
 ---
-### 5. Установка WordPress . В процессе
+### 5. Установка WordPress . Сделано
 
 +   Разработана Ansible роль для установки WordPress. Сделано
 
