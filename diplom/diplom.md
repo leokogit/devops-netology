@@ -283,6 +283,8 @@ Master_SSL_Verify_Server_Cert: No
 
    - https://alertmanager.ldevops.ru (Alert Manager)  
     
-<p align="center"> <img src="./assets/alertmanager.jpg"></p>        
+<p align="center"> <img src="./assets/alertmanager.jpg"></p> 
+
+Ссылка на исходники с обезличиченными данными https://github.com/leokogit/diplom-src 
 
 ---
