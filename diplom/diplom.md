@@ -271,7 +271,7 @@ Master_SSL_Verify_Server_Cert: No
 
    - https://gitlab.ldevops.ru (Gitlab)
       
-<p align="center"> <img src="./assets/gitlab.jpg"></p> 
+<p align="center"> <img src="./assets/jobs.jpg"></p> 
 
    - https://grafana.ldevops.ru/grafana (Grafana)  
     
