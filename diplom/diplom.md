@@ -266,23 +266,22 @@ Master_SSL_Verify_Server_Cert: No
 
 Скриншоты веб-интерфейсов всех сервисов работающих по HTTPS: 
 
-   - `https://www.you.domain` (WordPress)             
-
+   - https://www.ldevops.ru (Wordpress)
 <p align="center"> <img src="./assets/site.jpg"></p>            
 
-   - `https://gitlab.you.domain` (Gitlab)
+   - https://gitlab.ldevops.ru (Gitlab)
       
 <p align="center"> <img src="./assets/gitlab.jpg"></p> 
 
-   - `https://grafana.you.domain` (Grafana)  
+   - https://grafana.ldevops.ru/grafana (Grafana)  
     
 <p align="center"> <img src="./assets/grafana.jpg"></p>     
 
-   - `https://prometheus.you.domain` (Prometheus)
+   - https://prometheus.ldevops.ru (Prometheus)
        
 <p align="center"> <img src="./assets/prometheus.jpg"></p>  
 
-   - `https://alertmanager.you.domain` (Alert Manager)  
+   - https://alertmanager.ldevops.ru (Alert Manager)  
     
 <p align="center"> <img src="./assets/alertmanager.jpg"></p>        
 
