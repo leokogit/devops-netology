@@ -266,18 +266,24 @@ Master_SSL_Verify_Server_Cert: No
 
 Скриншоты веб-интерфейсов всех сервисов работающих по HTTPS: 
 
-   - `https://www.you.domain` (WordPress)      
+   - `https://www.you.domain` (WordPress)             
 
-<p align="center"> <img src="./assets/site.jpg"></p>    
+<p align="center"> <img src="./assets/site.jpg"></p>            
 
-   - `https://gitlab.you.domain` (Gitlab)      
-<p align="center"> <img src="./assets/gitlab.jpg"></p>      
-   - `https://grafana.you.domain` (Grafana)     
+   - `https://gitlab.you.domain` (Gitlab)
+      
+<p align="center"> <img src="./assets/gitlab.jpg"></p> 
+
+   - `https://grafana.you.domain` (Grafana)  
+    
 <p align="center"> <img src="./assets/grafana.jpg"></p>     
 
-   - `https://prometheus.you.domain` (Prometheus)      
-<p align="center"> <img src="./assets/prometheus.jpg"></p>      
-   - `https://alertmanager.you.domain` (Alert Manager)     
+   - `https://prometheus.you.domain` (Prometheus)
+       
+<p align="center"> <img src="./assets/prometheus.jpg"></p>  
+
+   - `https://alertmanager.you.domain` (Alert Manager)  
+    
 <p align="center"> <img src="./assets/alertmanager.jpg"></p>        
 
 ---
